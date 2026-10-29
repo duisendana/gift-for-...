@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAAZ.EXE 🩵</title>
+
+<style>
+:root {
+  --bg: #050b18;
+  --panel: #0c1930;
+  --blue: #8be9ff;
+  --light: #d8f8ff;
+  --muted: #8ba8c8;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--light);
+  font-family: "Courier New", monospace;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-image:
+    radial-gradient(ellipse at top, #14335c 0%, transparent 65%);
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #234365;
+  padding: 8px 0 16px;
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.status {
+  color: #7bffbf;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 34px 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  /* Маңызды: экранның ішіндегі ұзын мәтін
+     енді телефонда төмен қарай скролл болады */
+  min-height: 0;
+  overflow: visible;
+  animation: appear .3s ease;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pixel {
+  color: var(--blue);
+  text-shadow: 0 0 12px #43cfff;
+}
+
+.heart {
+  color: var(--blue);
+  font-size: 64px;
+  margin-bottom: 24px;
+  text-shadow: 0 0 18px #43cfff;
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+h1 {
+  font-size: clamp(28px, 7vw, 43px);
+  line-height: 1.3;
+  margin-bottom: 18px;
+  overflow-wrap: anywhere;
+}
+
+h2 {
+  color: var(--blue);
+  font-size: 22px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+p {
+  color: #b9cde5;
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.small {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.panel, .paper {
+  width: 100%;
+  padding: 22px 18px;
+  background: rgba(12, 25, 48, .95);
+  border: 1px solid #294969;
+  border-radius: 8px;
+  margin-bottom: 22px;
+  text-align: left;
+  box-shadow: 0 0 24px #0b244233;
+}
+
+.paper p {
+  font-size: 13px;
+  margin-bottom: 17px;
+}
+
+.paper p:last-child {
+  margin-bottom: 0;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 15px 18px;
+  margin: 10px auto 0;
+  border: 1px solid var(--blue);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--blue);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn:hover {
+  background: #14344f;
+  box-shadow: 0 0 15px #43cfff55;
+}
+
+.btn.primary {
+  background: var(--blue);
+  color: #06111f;
+}
+
+.btn.primary:hover {
+  background: white;
+}
+
+input {
+  width: 100%;
+  max-width: 320px;
+  padding: 15px;
+  margin: 8px auto;
+  background: #071224;
+  color: white;
+  border: 1px solid #345879;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 16px;
+  text-align: center;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 12px #43cfff44;
+}
+
+.error {
+  min-height: 24px;
+  color: #ff9cae;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.calendar {
+  width: 100%;
+  max-width: 330px;
+  padding: 18px;
+  margin: 12px auto 22px;
+  background: #0b172b;
+  border: 1px solid #2a4b6d;
+  border-radius: 8px;
+}
+
+.month {
+  color: var(--blue);
+  margin-bottom: 18px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day {
+  padding: 8px 0;
+  font-size: 12px;
+  color: #a7bad1;
+}
+
+.day.special {
+  background: var(--blue);
+  color: #071224;
+  border-radius: 4px;
+  font-weight: bold;
+  box-shadow: 0 0 12px #43cfff66;
+}
+
+.footer {
+  width: 100%;
+  text-align: center;
+  color: #456482;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 18px 0 8px;
+}
+
+@media (max-width: 380px) {
+  .app {
+    padding: 12px;
+  }
+
+  .screen {
+    padding: 26px 0;
+  }
+
+  .paper, .panel {
+    padding: 16px 14px;
+  }
+
+  .heart {
+    font-size: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header class="topbar">
+  <span>MAAZ.EXE</span>
+  <span class="status">● ONLINE</span>
+</header>
+
+<!-- SCREEN 1 -->
+<section class="screen active" id="welcome">
+  <div class="heart">♡</div>
+  <p class="small">A LITTLE WORLD MADE FOR YOU</p>
+  <h1 class="pixel">HELLO,<br>UNCLE MAAZ</h1>
+  <p>A tiny internet world, made with lots of love and a little bit of boredom hahaha.</p>
+  <button class="btn primary" onclick="showScreen('code')">
+    ENTER MY WORLD →
+  </button>
+  <p class="small" style="margin-top:20px">[ PRESS TO START ]</p>
+</section>
+
+<!-- SCREEN 2 -->
+<section class="screen" id="code">
+  <div class="heart">♡</div>
+  <p class="small">LEVEL 01 / SECURITY CHECK</p>
+  <h2>One little secret...</h2>
+  <p>Enter the special date that started our little internet story.</p>
+
+  <input id="secretCode" type="password"
+    inputmode="numeric" maxlength="10"
+    placeholder="Enter secret code" autocomplete="off">
+
+  <button class="btn primary" onclick="unlock()">UNLOCK →</button>
+  <div class="error" id="codeError"></div>
+  <button class="btn" onclick="showScreen('welcome')">← GO BACK</button>
+</section>
+
+<!-- SCREEN 3 -->
+<section class="screen" id="date">
+  <p class="small">LEVEL 02 / A SPECIAL DAY</p>
+  <h2>The beginning of us ♡</h2>
+
+  <div class="calendar">
+    <div class="month">FEBRUARY</div>
+    <div class="days">
+      <div class="day">M</div><div class="day">T</div>
+      <div class="day">W</div><div class="day">T</div>
+      <div class="day">F</div><div class="day">S</div>
+      <div class="day">S</div>
+
+      <div class="day"></div><div class="day"></div>
+      <div class="day"></div><div class="day"></div>
+      <div class="day"></div><div class="day"></div>
+      <div class="day">1</div>
+
+      <div class="day">2</div><div class="day">3</div>
+      <div class="day">4</div><div class="day">5</div>
+      <div class="day">6</div><div class="day">7</div>
+      <div class="day">8</div>
+
+      <div class="day">9</div><div class="day">10</div>
+      <div class="day">11</div><div class="day">12</div>
+      <div class="day">13</div><div class="day">14</div>
+      <div class="day">15</div>
+
+      <div class="day">16</div><div class="day">17</div>
+      <div class="day">18</div><div class="day">19</div>
+      <div class="day">20</div><div class="day">21</div>
+      <div class="day">22</div>
+
+      <div class="day special">23</div>
+      <div class="day">24</div><div class="day">25</div>
+      <div class="day">26</div><div class="day">27</div>
+      <div class="day">28</div>
+    </div>
+  </div>
+
+  <p><span class="pixel">23 February</span><br>
+    The day our little internet story began. ♡</p>
+
+  <button class="btn primary" onclick="showScreen('memory')">
+    NEXT MEMORY →
+  </button>
+</section>
+
+<!-- SCREEN 4 -->
+<section class="screen" id="memory">
+  <p class="small">LEVEL 03 / A LITTLE MEMORY</p>
+  <h2>Something I remember ♡</h2>
+
+  <div class="paper">
+    <p>You know sometimes the smallest moments stay in your memory even if the other person doesn't really think much about them.</p>
+
+    <p>I still remember the first time you called me "kid" hahaha and now you call me your sweetest and cute kid every day. I can't even explain how much I appreciate it.</p>
+
+    <p>Maybe they're just simple words for you but they mean a lot to me. Hearing them from you always makes me smile.</p>
+
+    <p>I'm really glad we met on February 23. Like who would've thought that a random internet meeting would become something so special to me hahaha. I really love our little moments and conversations.</p>
+
+    <p>I just wanted to keep this little memory here because it's about you. Thank you for bringing so much warmth into my days and for being yourself cute uncle ♡</p>
+  </div>
+
+  <button class="btn primary" onclick="showScreen('puzzle')">
+    CONTINUE →
+  </button>
+</section>
+
+<!-- SCREEN 5 -->
+<section class="screen" id="puzzle">
+  <div class="heart">♡</div>
+  <p class="small">LEVEL 04 / MINI CHALLENGE</p>
+  <h2>One last little puzzle!</h2>
+
+  <div class="panel" style="text-align:center">
+    <p class="pixel" style="font-size:22px">
+      (12 ÷ 3) + (5 × 2) − 3 = ?
+    </p>
+    <p class="small">Solve it to unlock the next page.</p>
+  </div>
+
+  <input id="mathAnswer" type="number"
+    inputmode="numeric" placeholder="Your answer">
+
+  <button class="btn primary" onclick="checkAnswer()">
+    CHECK ANSWER →
+  </button>
+
+  <div class="error" id="puzzleError"></div>
+</section>
+
+<!-- SCREEN 6 -->
+<section class="screen" id="unlocked">
+  <div class="heart">♥</div>
+  <p class="small">ACCESS GRANTED</p>
+  <h1 class="pixel">UNLOCKED!</h1>
+  <p>Yayyy, you did it, uncle hahaha! There's one more thing waiting for you.</p>
+
+  <button class="btn primary" onclick="showScreen('letter')">
+    OPEN YOUR LETTER ♡
+  </button>
+</section>
+
+<!-- SCREEN 7 -->
+<section class="screen" id="letter">
+  <p class="small">FINAL LEVEL / A MESSAGE FOR YOU</p>
+  <h2>Dear cute uncle 🩵</h2>
+
+  <div class="paper">
+    <p>I don't even know what to write hahaha I just wanted to make you happy.</p>
+
+    <p>You're a very very very goooood person and ofc the sweeeetest uncle hahaha.</p>
+
+    <p>Thank you for everything. Thank you for making my mood better every day and for always supporting and understanding me.</p>
+
+    <p>Uncle yk what? You're the first person I've talked to every single day for 8 months hahahaha and honestly I'm so glad I met you. I really hope that one day we'll meet in real life and stay friends forever.</p>
+
+    <p>I hope you liked this hahaha I was bored and wanted to make you happy so I made this for you.</p>
+
+    <p>Thank you for everything cute uncle 🫶🏻🩵</p>
+  </div>
+
+  <button class="btn primary" onclick="showScreen('ending')">
+    ONE LAST THING →
+  </button>
+</section>
+
+<!-- SCREEN 8 -->
+<section class="screen" id="ending">
+  <div class="heart">♡</div>
+  <p class="small">SYSTEM MESSAGE / COMPLETE</p>
+  <h1 class="pixel">THANK YOU,<br>MAAZ.</h1>
+  <p>YOU'VE REACHED THE END of this little world. Thank you for being here, cute uncle. 🩵</p>
+  <p class="pixel">END OF GAME ♡</p>
+
+  <button class="btn" onclick="showScreen('welcome')">
+    ↻ PLAY AGAIN
+  </button>
+</section>
+
+<footer class="footer">MADE WITH ♡ JUST FOR YOU</footer>
+</div>
+
+<script>
+function showScreen(screenId) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  const target = document.getElementById(screenId);
+
+  if (target) {
+    target.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+}
+
+function unlock() {
+  const input = document.getElementById("secretCode");
+  const error = document.getElementById("codeError");
+
+  if (input.value.trim() === "2302") {
+    error.textContent = "";
+    input.value = "";
+    showScreen("date");
+  } else {
+    error.textContent = "Wrong code! Try again, uncle ♡";
+    input.value = "";
+    input.focus();
+  }
+}
+
+function checkAnswer() {
+  const input = document.getElementById("mathAnswer");
+  const error = document.getElementById("puzzleError");
+
+  if (input.value.trim() === "11") {
+    error.textContent = "";
+    input.value = "";
+    showScreen("unlocked");
+  } else {
+    error.textContent = "Not quite! Try again 🩵";
+    input.value = "";
+    input.focus();
+  }
+}
+
+document.getElementById("secretCode")
+  .addEventListener("keydown", event => {
+    if (event.key === "Enter") unlock();
+  });
+
+document.getElementById("mathAnswer")
+  .addEventListener("keydown", event => {
+    if (event.key === "Enter") checkAnswer();
+  });
+</script>
+
+</body>
+</html>
